@@ -1,49 +1,48 @@
-version: '3.8'
+version: '3.1'
 services:
   stats-server:
-    build: stats-service/stats-server
-    image: stats-server_image
-    container_name: stats-server_container
+    build: explore-stats/stat-server/
     ports:
       - "9090:9090"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=iamroot
+      - DB_NAME=statServiceDb
+      - DB_HOST=stats-db
+      - DB_PORT=5432
     depends_on:
       - stats-db
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats
-      - POSTGRES_USER=developer
-      - POSTGRES_PASSWORD=developer
 
   stats-db:
     image: postgres:14-alpine
-    container_name: stats-db
     ports:
-      - "6541:5432"
+      - "5437:5432"
+    container_name: stats-db-container
     environment:
-      - POSTGRES_DB=stats
-      - POSTGRES_USER=developer
-      - POSTGRES_PASSWORD=developer
+      - POSTGRES_DB=statServiceDb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=iamroot
 
-  ewm-service:
-    build: ewm-service
-    image: ewm-service_image
-    container_name: ewm-service_container
+  explore-main-db:
+    image: postgres:14-alpine
+    ports:
+      - "5438:5432"
+    container_name: explore-main-db-container
+    environment:
+      - POSTGRES_DB=exploreMainServiceDb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=iamroot
+
+  explore-main-server:
+    build: explore-main/
     ports:
       - "8080:8080"
     depends_on:
-      - stats-server
-      - ewm-db
+      - explore-main-db
     environment:
-      - SERVICES_STAT_SERVER_URI=http://stats-server:9090
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/ewm
-      - POSTGRES_USER=developer
-      - POSTGRES_PASSWORD=developer
-
-  ewm-db:
-    image: postgres:14-alpine
-    container_name: ewm-db
-    ports:
-      - "6542:5432"
-    environment:
-      - POSTGRES_DB=ewm
-      - POSTGRES_USER=developer
-      - POSTGRES_PASSWORD=developer
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=iamroot
+      - STAT_SERVER_URL=http://stats-server:9090
+      - DB_NAME=exploreMainServiceDb
+      - DB_HOST=explore-main-db
+      - DB_PORT=5432
