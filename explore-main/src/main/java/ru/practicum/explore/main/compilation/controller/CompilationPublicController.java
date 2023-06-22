@@ -32,5 +32,4 @@ public class CompilationPublicController {
         log.info("Получение подборки событий по его id={}", compilationId);
         return new ResponseEntity<>(compilationService.getCompilationDtoById(compilationId), HttpStatus.OK);
     }
-
 }
