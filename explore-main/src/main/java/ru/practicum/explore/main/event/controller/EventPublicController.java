@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.explore.main.event.dto.EventFullDto;
+import ru.practicum.explore.main.event.model.FilterSort;
 import ru.practicum.explore.main.event.service.EventService;
 import ru.practicum.explore.main.exceptions.RequestValidationException;
 
@@ -50,9 +51,5 @@ public class EventPublicController {
     public ResponseEntity<EventFullDto> getEventById(@PathVariable Long id, HttpServletRequest request) {
         log.info("Получение подробной информации об опубликованном событии по его id={}, uri={}", id, request.getRequestURI());
         return new ResponseEntity<>(eventService.getEventById(id, request), HttpStatus.OK);
-    }
-
-    public enum FilterSort {
-        EVENT_DATE, VIEWS
     }
 }

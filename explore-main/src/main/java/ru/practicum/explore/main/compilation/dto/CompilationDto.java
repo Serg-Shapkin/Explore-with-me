@@ -14,6 +14,6 @@ public class CompilationDto {
     private List<EventShortDto> events = new ArrayList<>();
     private Long id;
     private boolean pinned;
-    @Size(max = 50)
+    @Size(max = 50, message = "Количество символов в заголовке подборки должно быть не больше 50")
     private String title;
 }

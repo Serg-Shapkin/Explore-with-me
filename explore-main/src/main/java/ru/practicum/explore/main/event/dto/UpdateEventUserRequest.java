@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 
 @Data
 public class UpdateEventUserRequest {
-    @Size(max = 2000, min = 20)
+    @Size(max = 2000, min = 20, message = "Количество символов в кратком описании должно быть в пределах 20-2000")
     private String annotation;
     private Long category;
-    @Size(max = 7000, min = 20)
+    @Size(max = 7000, min = 20, message = "Количество символов в полном описании должно быть в пределах 20-7000")
     private String description;
     @Future
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -25,7 +25,7 @@ public class UpdateEventUserRequest {
     private Integer participantLimit;
     private Boolean requestModeration;
     private State stateAction;
-    @Size(max = 120, min = 3)
+    @Size(max = 120, min = 3, message = "Количество символов в заголовке события должно быть в пределах 3-120")
     private String title;
 
     public enum State {
